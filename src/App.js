@@ -1,13 +1,17 @@
 import { AsyncStorage } from 'react-native';
-import { Navigation } from 'react-native-navigation'
+import { Navigation } from 'react-native-navigation';
+import store from './redux';
+import Provider from 'react-redux';
 import { registerScreens } from './screens';
 
-registerScreens()
+
+registerScreens(store, Provider)
 
 const startApplication = () => {
   AsyncStorage.getItem('@TSQ_TOKEN')
   .then(val => {
-    Onboarding()
+    store.dispatch(fetchUser(val))
+    loggedInView()
   })
   .catch(err => {
     AsyncStorage.removeItem('@TSQ_TOKEN')
@@ -16,7 +20,6 @@ const startApplication = () => {
 }
 
 const Onboarding = () => {
-  console.log(Navigation)
   Navigation.setRoot({
     root: {
       stack: {
@@ -33,6 +36,10 @@ const Onboarding = () => {
       },
     }
   })
+}
+
+const loggedInView = () => {
+
 }
 
 export default startApplication
