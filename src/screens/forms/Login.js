@@ -36,9 +36,10 @@ class Login extends Component {
       // Log user in and exec this.props.loggedInView
       api.post('/auth', { email, password })
       .then(res => {
+        let { token } = res.data
         if (res.ok) {
-          this.props.fetchUser(res.data.token)
-          this.props.loginCb()
+          this.props.fetchUser(token)
+          this.props.loginCb(token)
         } else {
           this.errorTextRef.bounce(800)
           this.setState({

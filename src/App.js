@@ -1,19 +1,20 @@
 import { AsyncStorage } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import store from './redux';
+import { fetchUser } from './redux/actions/userActions';
 import { Provider } from 'react-redux';
 import { registerScreens } from './screens';
 
 registerScreens(Provider, store)
 
 const startApplication = () => {
-  AsyncStorage.getItem('@TSQ_TOKEN')
+  AsyncStorage.getItem('@TSQ:auth_token')
   .then(val => {
     store.dispatch(fetchUser(val))
     loggedInView()
   })
   .catch(err => {
-    AsyncStorage.removeItem('@TSQ_TOKEN')
+    AsyncStorage.removeItem('@TSQ:auth_token')
     Onboarding()
   })
 }
@@ -24,18 +25,18 @@ const Onboarding = () => {
       stack: {
         children: [{
           component: {
-            name: 'app.Onboarding'
+            name: 'app.Onboarding',
+            passProps: {
+              loginCb: authToken => {
+                AsyncStorage.setItem('@TSQ:auth_token', authToken);
+                loggedInView()
+              }
+            }
           }
         }],
         options: {
           topBar: {
             visible: false
-          }
-        },
-        passProps: {
-          loginCb: authToken => {
-            AsyncStorage.setItem('@TSQ_TOKEN', authToken);
-            loggedInView()
           }
         }
       },
@@ -44,7 +45,8 @@ const Onboarding = () => {
 }
 
 const loggedInView = () => {
-  Navifation.setRoot({
+  console.log('HERE')
+  Navigation.setRoot({
     root: {
       stack: {
         children: [{

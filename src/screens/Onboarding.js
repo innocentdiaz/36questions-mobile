@@ -77,7 +77,7 @@ class Onboarding extends Component {
               }}>36Questions</Animatable.Text>
           </View>
           {
-            currentScreen === 'login' ? <Login/> :
+            currentScreen === 'login' ? <Login loginCb={this.props.loginCb}/> :
             currentScreen === 'signup' ? <Signup/> :
             (
               <Animatable.View
