@@ -9,8 +9,30 @@ import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
 import LoadingScreen from './LoadingScreen';
 import Fonts from '../utils/Fonts';
+import { matchingView } from '../App';
 
 class Landing extends Component {
+  handleTransitionBubble = ref => this.transitionBubble = ref
+  handleFrameRef = ref => this.frameRef = ref
+  getMatched () {
+    this.transitionBubble.transitionTo({
+      backgroundColor: 'rgb(197, 103, 72)',
+      height: 10,
+      width: 10,
+      borderRadius: 5,
+      scale: 100
+    }, 600);
+
+    this.frameRef.fadeOut(600)
+    .then(() => matchingView());
+
+  }
+  constructor(props){
+    super(props);
+    this.state = {};
+
+    this.getMatched = this.getMatched.bind(this)
+  };
   render(){
     let { user } = this.props;
 
@@ -27,32 +49,52 @@ class Landing extends Component {
       )
     }
     return(
-      <View style={styles.mainContainer}>
-        <Animatable.Text
-          animation="fadeInUp"
-          delay={500}
-          style={styles.mainText}
-        >
-          Welcome, {user.firstName}
-        </Animatable.Text>
+      <Animatable.View
+        style={styles.mainContainer}
+      >
         <Animatable.View
-          animation="fadeInUp"
-          delay={750}
+          ref={this.handleTransitionBubble}
+          style={styles.transitionBubble}
+        ></Animatable.View>
+
+        <Animatable.View
+          ref={this.handleFrameRef}
         >
-          <TouchableOpacity
-            style={styles.mainButton}
+          <Animatable.Text
+            animation="fadeInUp"
+            delay={500}
+            style={styles.mainText}
           >
-            <Text
-              style={{
-                ...styles.mainText,
-                fontSize: 36
-              }}
+            Welcome, {user.firstName}
+          </Animatable.Text>
+          <Animatable.View
+            animation="fadeInUp"
+            delay={750}
+          >
+            <Animatable.View
+              animation="pulse"
+              easing="ease-out"
+              iterationCount="infinite"
+              delay={2000}
+              duration={4500}
             >
-              GET MATCHED
-            </Text>
-          </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.mainButton}
+                onPress={this.getMatched}
+              >
+                <Text
+                  style={{
+                    ...styles.mainText,
+                    fontSize: 30
+                  }}
+                >
+                  GET MATCHED
+                </Text>
+              </TouchableOpacity>
+            </Animatable.View>
+          </Animatable.View>
         </Animatable.View>
-      </View>
+      </Animatable.View>
     );
   }
 };
@@ -83,6 +125,13 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     paddingLeft: 15,
     paddingRight: 15
+  },
+  transitionBubble: {
+    backgroundColor: 'rgb(249, 194, 150)',
+    position: 'absolute',
+    top: '50%',
+    height: 0,
+    width: 0
   }
 })
 
