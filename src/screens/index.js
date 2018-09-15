@@ -1,9 +1,9 @@
 import { Navigation } from 'react-native-navigation'
 
 import Landing from './Landing'
-import Onboarding from './Onboarding';
+import Onboarding from './Onboarding'
 
-export function registerScreens(store, Provider) {
-  Navigation.registerComponent('app.Landing', () => Landing, store, Provider)
-  Navigation.registerComponent('app.Onboarding', () => Onboarding, store, Provider)
+export function registerScreens(Provider, store) {
+  Navigation.registerComponentWithRedux('app.Landing', () => Landing, Provider, store)
+  Navigation.registerComponentWithRedux('app.Onboarding', () => Onboarding, Provider, store)
 }
