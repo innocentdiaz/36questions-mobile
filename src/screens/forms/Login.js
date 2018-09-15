@@ -5,7 +5,10 @@ import {
   TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
+import { connect } from 'react-redux';
+import { fetchUser } from '../../redux/actions/userActions';
 import Fonts from '../../utils/Fonts';
+import api from '../../api';
 
 class Login extends Component {
   handleMainContainerRef = ref => this.mainContainerRef = ref
@@ -13,7 +16,6 @@ class Login extends Component {
 
   submit() {
     let { email, password } = this.state
-    console.log(email)
 
     if (email.trim() == '' || !email) {
       this.errorTextRef.bounce(800)
@@ -32,8 +34,19 @@ class Login extends Component {
       })
 
       // Log user in and exec this.props.loggedInView
+      api.post('/auth', { email, password })
+      .then(res => {
+        if (res.ok) {
+          this.props.fetchUser(res.data.token)
+          this.props.loginCb()
+        } else {
+          this.errorTextRef.bounce(800)
+          this.setState({
+            message: res.data.message || 'Failed to log in!'
+          })
+        }
+      })
     }
-    
   }
   componentDidMount() {
     this.mainContainerRef.transition(
@@ -156,4 +169,11 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Login
+const mapDispatchToProps = {
+  fetchUser
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Login)
