@@ -7,7 +7,7 @@ import { registerScreens } from './screens';
 
 registerScreens(Provider, store)
 
-const startApplication = () => {
+export const startApplication = () => {
   AsyncStorage.getItem('@TSQ:auth_token')
   .then(val => {
     store.dispatch(fetchUser(val))
@@ -64,4 +64,21 @@ const loggedInView = () => {
   })
 }
 
-export default startApplication
+export const matchingView = () => {
+  Navigation.setRoot({
+    root: {
+      stack: {
+        children: [{
+          component: {
+            name: 'app.Matching'
+          }
+        }],
+        options: {
+          topBar: {
+            visible: false
+          }
+        }
+      }
+    }
+  })
+}

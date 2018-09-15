@@ -1,3 +1,3 @@
-import App from './src/App';
+import { startApplication } from './src/App';
 
-App();
+startApplication();
