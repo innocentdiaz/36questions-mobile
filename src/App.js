@@ -82,3 +82,25 @@ export const matchingView = () => {
     }
   })
 }
+
+export const roomView = roomID => {
+  Navigation.setRoot({
+    root: {
+      stack: {
+        children: [{
+          component: {
+            name: 'app.Room',
+            passProps: {
+              roomID
+            }
+          }
+        }],
+        options: {
+          topBar: {
+            visible: false
+          }
+        }
+      }
+    }
+  })
+}
