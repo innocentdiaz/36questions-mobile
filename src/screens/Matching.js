@@ -10,10 +10,14 @@ import * as Animatable from 'react-native-animatable';
 import Fonts from '../utils/Fonts';
 import io from 'socket.io-client';
 import api from '../api';
+import { roomView } from '../App';
 
 const socket = io(api.getBaseURL() + '/matching');
 
 class Matching extends Component {
+  handleContainerRef = ref => this.containerRef = ref
+  handleMainContainerRef = ref => this.mainContainerRef = ref
+
   subscribeToSearch() {
     let { user } = this.props;
 
@@ -34,8 +38,11 @@ class Matching extends Component {
       });
     });
     socket.on('match success', ({name, roomID}) => {
-      alert('You have been matched with ' + name + '. Joining room.');
-      window.location = '/room/' + roomID;
+      this.setState({
+        message: 'You have been matched with ' + name + '. Joining room.'
+      });
+
+      setTimeout(() => this.goToRoom(roomID), 2000)
     });
     socket.on('disconnect', () => {
       this.setState({
@@ -50,6 +57,15 @@ class Matching extends Component {
       });
     });
   }
+
+  async goToRoom(roomID) {
+    this.mainContainerRef.transitionTo({
+      backgroundColor: 'rgb(249, 194, 150)'
+    }, 500)
+    await this.containerRef.fadeOutLeft(500)
+
+    roomView(roomID);
+  }
   constructor(props){
     super(props);
     this.state = {
@@ -58,13 +74,18 @@ class Matching extends Component {
     };
 
     this.subscribeToSearch = this.subscribeToSearch.bind(this);
+    this.goToRoom = this.goToRoom.bind(this);
   };
   render(){
     let { message, matching } = this.state
 
     return(
-      <View style={styles.mainContainer}>
+      <Animatable.View
+        ref={this.handleMainContainerRef}
+        style={styles.mainContainer}
+      >
         <Animatable.View
+          ref={this.handleContainerRef}
           animation='fadeIn'
         >
           <Text
@@ -99,7 +120,7 @@ class Matching extends Component {
             )
           }
         </Animatable.View>
-      </View>
+      </Animatable.View>
     );
   }
 };
