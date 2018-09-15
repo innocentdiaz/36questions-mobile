@@ -8,13 +8,47 @@ import {
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Fonts from '../utils/Fonts';
+import io from 'socket.io-client';
+import api from '../api';
+
+const socket = io(api.getBaseURL() + '/matching');
 
 class Matching extends Component {
   subscribeToSearch() {
-    this.setState({
-      message: 'Joined matching',
-      matching: true
-    })
+    let { user } = this.props;
+
+    socket.emit('subscribeToQue', user.authToken);
+    socket.on('subscribe success', () => {
+      this.setState({
+        matching: true
+      });
+    });
+    socket.on('que length', (que_length) => {
+      let message = que_length > 1 ? `There are ${que_length-1} other users in the que.` : 'Waiting for users to join...'
+      this.setState({ message })
+    });
+    socket.on('subscribe disconnect', () => {
+      this.setState({
+        message: 'Disconnected from matching',
+        matching: false
+      });
+    });
+    socket.on('match success', ({name, roomID}) => {
+      alert('You have been matched with ' + name + '. Joining room.');
+      window.location = '/room/' + roomID;
+    });
+    socket.on('disconnect', () => {
+      this.setState({
+        message: 'Disconnected from the matching',
+        matching: false
+      });
+    });
+    socket.on('invalid information', () => {
+      this.setState({
+        message: 'You have provided invalid information to the server',
+        matching: false
+      });
+    });
   }
   constructor(props){
     super(props);
