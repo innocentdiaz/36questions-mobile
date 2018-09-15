@@ -53,7 +53,12 @@ const loggedInView = () => {
           component: {
             name: 'app.Landing'
           }
-        }]
+        }],
+        options: {
+          topBar: {
+            visible: false
+          }
+        }
       }
     }
   })
