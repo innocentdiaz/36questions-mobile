@@ -19,7 +19,7 @@ export const startApplication = () => {
   })
 }
 
-const Onboarding = () => {
+export const Onboarding = () => {
   Navigation.setRoot({
     root: {
       stack: {
@@ -33,12 +33,7 @@ const Onboarding = () => {
               }
             }
           }
-        }],
-        options: {
-          topBar: {
-            visible: false
-          }
-        }
+        }]
       },
     }
   })

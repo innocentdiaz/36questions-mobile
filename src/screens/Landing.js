@@ -9,7 +9,7 @@ import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
 import LoadingScreen from './LoadingScreen';
 import Fonts from '../utils/Fonts';
-import { matchingView } from '../App';
+import { matchingView, Onboarding } from '../App';
 
 class Landing extends Component {
   handleTransitionBubble = ref => this.transitionBubble = ref
@@ -42,12 +42,10 @@ class Landing extends Component {
       )
     }
     if (!user.authenticated) {
-      return (
-        <View>
-          <Text>Failed to authenticate user!</Text>
-        </View>
-      )
+      Onboarding()
+      return null
     }
+
     return(
       <Animatable.View
         style={styles.mainContainer}
