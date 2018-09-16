@@ -99,9 +99,22 @@ class Room extends Component {
     socket.emit('message', messages[0].text);
     socket.emit('typing', false)
   }
+  onInputTextChanged(text) {
+    let { socket } = this.state;
+    let oldMessage = this.state.message;
+
+    this.setState({message: text});
+
+    if (oldMessage === '' && text.length > 0) { // if the old message is empty and we started typing
+      socket.emit('typing', true)
+    } else if (oldMessage.length > 0 && text === '') { // else if old message is not empty and we just made it empty
+      socket.emit('typing', false)
+    }
+  }
   constructor(props){
     super(props);
     this.state = {
+      message: '',
       messages: [],
       joined: null,
       display: '',
@@ -113,6 +126,7 @@ class Room extends Component {
 
     this.sendMessage = this.sendMessage.bind(this);
     this.renderFooter = this.renderFooter.bind(this);
+    this.onInputTextChanged = this.onInputTextChanged.bind(this);
   };
   render(){
     let {
@@ -143,6 +157,8 @@ class Room extends Component {
           </View>
         </View>
         <GiftedChat
+          text={this.state.message}
+          onInputTextChanged={text => this.onInputTextChanged(text)}
           renderFooter={this.renderFooter}
           messages={messages}
           onSend={messages => this.sendMessage(messages)}
