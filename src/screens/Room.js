@@ -5,6 +5,7 @@ import {
   StyleSheet
 } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
+import AnimatedEllipsis from 'react-native-animated-ellipsis';
 import { connect } from 'react-redux';
 import Fonts from '../utils/Fonts';
 import api from '../api';
@@ -57,6 +58,27 @@ class Room extends Component {
       });
     });
   }
+  renderFooter() {
+    // true because we are testing
+    if (this.state.typing.status) {
+      return (
+        <View
+          style={{
+            padding: 5
+          }}
+        >
+          <AnimatedEllipsis
+            style={{
+              color: 'white',
+              fontSize: 36,
+              letterSpacing: -1
+            }}
+          />
+        </View>
+      );
+    }
+    return null;
+  }
   componentDidMount() {
     const { roomID } = this.props
     let socket = io(api.getBaseURL() + '/rooms?id=' + roomID)
@@ -90,6 +112,7 @@ class Room extends Component {
     };
 
     this.sendMessage = this.sendMessage.bind(this);
+    this.renderFooter = this.renderFooter.bind(this);
   };
   render(){
     let {
@@ -120,6 +143,7 @@ class Room extends Component {
           </View>
         </View>
         <GiftedChat
+          renderFooter={this.renderFooter}
           messages={messages}
           onSend={messages => this.sendMessage(messages)}
           user={{
