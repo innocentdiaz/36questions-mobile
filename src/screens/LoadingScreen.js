@@ -9,7 +9,7 @@ class LoadingScreen extends Component {
     return(
       <View style={styles.mainContainer}>
         <View style={{
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           flex: 1
         }}>
           <Animatable.Text
