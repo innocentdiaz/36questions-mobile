@@ -8,19 +8,7 @@ import Signup from './forms/Signup';
 
 class Onboarding extends Component {
   handleMainHeaderRef = ref => this.mainHeaderRef = ref
-  handleMainContainerRef = ref => this.mainContainerRef = ref
 
-  componentDidMount() {
-    this.mainContainerRef.transition(
-    {
-      flex: 0,
-      opacity: 0
-    },
-    {
-      flex: 1,
-      opacity: 1
-    }, 1000)
-  }
   async showLogin() {
     this.mainHeaderRef.transitionTo({
       fontSize: 44
@@ -61,7 +49,8 @@ class Onboarding extends Component {
     return(
       <Animatable.View
         animation="fadeIn"
-        style={styles.mainContainer}>
+        style={styles.mainContainer}
+      >
         <View style={{
           flex: 1,
           justifyContent: 'center',
@@ -133,6 +122,7 @@ class Onboarding extends Component {
 
 const styles = StyleSheet.create({
   mainContainer: {
+    flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-around'
