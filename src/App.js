@@ -53,12 +53,7 @@ const loggedInView = () => {
           component: {
             name: 'app.Landing'
           }
-        }],
-        options: {
-          topBar: {
-            visible: false
-          }
-        }
+        }]
       }
     }
   })
@@ -72,12 +67,7 @@ export const matchingView = () => {
           component: {
             name: 'app.Matching'
           }
-        }],
-        options: {
-          topBar: {
-            visible: false
-          }
-        }
+        }]
       }
     }
   })
@@ -94,12 +84,7 @@ export const roomView = roomID => {
               roomID
             }
           }
-        }],
-        options: {
-          topBar: {
-            visible: false
-          }
-        }
+        }]
       }
     }
   })

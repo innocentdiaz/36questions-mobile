@@ -102,7 +102,6 @@ class Landing extends Component {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#f9c296',
     alignItems: 'center',
     paddingLeft: 10,
     paddingRight: 10,

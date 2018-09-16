@@ -59,85 +59,79 @@ class Onboarding extends Component {
     let { currentScreen } = this.state
 
     return(
-      <View style={styles.frame}>
-        <Animatable.View
-          ref={this.handleMainContainerRef}
-          style={styles.mainContainer}>
-          <View style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
-            <Animatable.Text
-              ref={this.handleMainHeaderRef}
-              animation="fadeInUp"
-              style={{
-                ...styles.mainText,
-                fontSize: 54
-              }}>36Questions</Animatable.Text>
-          </View>
-          {
-            currentScreen === 'login' ? <Login loginCb={this.props.loginCb}/> :
-            currentScreen === 'signup' ? <Signup/> :
-            (
-              <Animatable.View
-                style={{flex: 1}}
-              >
-                <Animatable.View
-                  ref={this.handleLoginButtonRef}
-                  animation="fadeInUp"
-                  delay={100}
-                >
-                  <TouchableOpacity 
-                    style={{ ...styles.buttonStyle, marginBottom: 10 }}
-                    onPress={this.showLogin}
-                  >
-                    <Text style={{ ...styles.mainText, fontSize: 25 }}>LOGIN</Text>
-                  </TouchableOpacity>
-                </Animatable.View>
-                <Animatable.View
-                  ref={this.handleSignupButtonRef}
-                  animation="fadeInUp"
-                  delay={250}
-                >
-                  <TouchableOpacity 
-                    style={{ ...styles.buttonStyle, marginTop: 10 }}
-                    onPress={this.showSignup}
-                  >
-                    <Text style={{ ...styles.mainText, fontSize: 25 }}>SIGNUP</Text>
-                  </TouchableOpacity>
-                </Animatable.View>
-              </Animatable.View>
-            )
-          }
-          {currentScreen !== 'default' ? 
-            (<TouchableOpacity
-              style={{
-                ...styles.buttonStyle,
-                paddingTop: 5,
-                paddingBottom: 5,
-                borderColor: 'transparent',
-                alignSelf: 'flex-start'
-              }}
-              onPress={this.backToDefault}
+      <Animatable.View
+        animation="fadeIn"
+        style={styles.mainContainer}>
+        <View style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+          <Animatable.Text
+            ref={this.handleMainHeaderRef}
+            animation="fadeInUp"
+            style={{
+              ...styles.mainText,
+              fontSize: 54
+            }}>36Questions</Animatable.Text>
+        </View>
+        {
+          currentScreen === 'login' ? <Login loginCb={this.props.loginCb}/> :
+          currentScreen === 'signup' ? <Signup/> :
+          (
+            <Animatable.View
+              style={{flex: 1}}
             >
-              <Text style={{
-                ...styles.mainText,
-                fontSize: 28
-              }}>Back</Text>
-            </TouchableOpacity>) : null
-          }
-        </Animatable.View>
-      </View>
+              <Animatable.View
+                ref={this.handleLoginButtonRef}
+                animation="fadeInUp"
+                delay={100}
+              >
+                <TouchableOpacity 
+                  style={{ ...styles.buttonStyle, marginBottom: 10 }}
+                  onPress={this.showLogin}
+                >
+                  <Text style={{ ...styles.mainText, fontSize: 25 }}>LOGIN</Text>
+                </TouchableOpacity>
+              </Animatable.View>
+              <Animatable.View
+                ref={this.handleSignupButtonRef}
+                animation="fadeInUp"
+                delay={250}
+              >
+                <TouchableOpacity 
+                  style={{ ...styles.buttonStyle, marginTop: 10 }}
+                  onPress={this.showSignup}
+                >
+                  <Text style={{ ...styles.mainText, fontSize: 25 }}>SIGNUP</Text>
+                </TouchableOpacity>
+              </Animatable.View>
+            </Animatable.View>
+          )
+        }
+        {currentScreen !== 'default' ? 
+          (<TouchableOpacity
+            style={{
+              ...styles.buttonStyle,
+              paddingTop: 5,
+              paddingBottom: 5,
+              borderColor: 'transparent',
+              alignSelf: 'flex-start'
+            }}
+            onPress={this.backToDefault}
+          >
+            <Text style={{
+              ...styles.mainText,
+              fontSize: 28
+            }}>Back</Text>
+          </TouchableOpacity>) : null
+        }
+      </Animatable.View>
     );
   }
 };
 
 const styles = StyleSheet.create({
-  frame: {
-    flex: 1,
-    backgroundColor: '#f9c296',
-  },
   mainContainer: {
     flexDirection: 'column',
     alignItems: 'center',
