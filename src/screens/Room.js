@@ -13,8 +13,6 @@ import io from 'socket.io-client';
 
 class Room extends Component {
   bindSocket(socket) {
-    this.setState({ bindedSocket: true })
-
     socket.emit('join room', this.props.user); // let socket know we want to join
 
     socket.on('joined', ({res, message}) => {
@@ -83,15 +81,9 @@ class Room extends Component {
     const { roomID } = this.props
     let socket = io(api.getBaseURL() + '/rooms?id=' + roomID)
 
-    this.setState({ socket });
-  }
-  componentDidUpdate() { // wait till we get the user and socket
-    let { bindedSocket, socket } = this.state;
-
-    if (bindedSocket) return
-    if (!socket) return
-
-    this.bindSocket(socket);
+    this.setState({ socket }, () => {
+      this.bindSocket(socket);
+    });
   }
   sendMessage(messages = []) {
     let { socket } = this.state;
