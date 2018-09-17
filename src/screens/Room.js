@@ -193,7 +193,8 @@ class Room extends Component {
                   </Text>
                 </TouchableOpacity> : null }
 
-                { isActive !== false ? <Button
+              { isActive !== false ?
+                <Button
                   title="DONE!"
                   loading={isActive === null}
                   disabled={!isActive}
