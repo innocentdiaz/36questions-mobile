@@ -39,8 +39,7 @@ export const Onboarding = () => {
   })
 }
 
-const loggedInView = () => {
-  console.log('HERE')
+export const loggedInView = () => {
   Navigation.setRoot({
     root: {
       stack: {

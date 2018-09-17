@@ -3,9 +3,11 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native';
-import { Button } from 'react-native-elements';
+import { loggedInView } from '../App';
+import { Icon, Button } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import { GiftedChat } from 'react-native-gifted-chat';
@@ -117,7 +119,24 @@ class Room extends Component {
     this.state.socket.emit('done'); // let the server know we are done answering
   }
   onReady() {
+    if (!this.state.socket) return
+    
     this.state.socket.emit('ready');
+  }
+  promptLeave() {
+    if (!this.state.socket) return
+
+    Alert.alert(
+      'Leave room?',
+      'Are you sure you want to leave this room?',
+      [
+        { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+        { text: 'Leave', onPress: () => {
+          this.state.socket.disconnect()
+          loggedInView()
+        } },
+      ]
+    )
   }
   constructor(props){
     super(props);
@@ -139,6 +158,7 @@ class Room extends Component {
     this.onInputTextChanged = this.onInputTextChanged.bind(this);
     this.doneAnswering = this.doneAnswering.bind(this);
     this.onReady = this.onReady.bind(this);
+    this.promptLeave = this.promptLeave.bind(this);
   };
   render(){
     let {
@@ -160,8 +180,14 @@ class Room extends Component {
                 alignItems: 'center'
               }}
             >
-              <View style={{flex: 1,}}>
-
+              <View style={{flex: 1, justifyContent: 'center'}}>
+                <Icon
+                  name='close'
+                  type='evilicons'
+                  color='white'
+                  size={36}
+                  onPress={this.promptLeave}
+                />
               </View>
               <View style={{flex: 2, alignItems: 'center'}}>
                 <Text
