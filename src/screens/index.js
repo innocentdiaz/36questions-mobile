@@ -5,13 +5,15 @@ import Onboarding from './Onboarding'
 import Matching from './Matching';
 import Room from './Room';
 
-Navigation.setDefaultOptions({
-  topBar: {
-    visible: false
-  },
-  layout: {
-    backgroundColor: '#f9c296'
-  }
+Navigation.events().registerAppLaunchedListener(() => {
+  Navigation.setDefaultOptions({
+    topBar: {
+      visible: false
+    },
+    layout: {
+      backgroundColor: '#f9c296'
+    }
+  });
 });
 
 export function registerScreens(Provider, store) {
