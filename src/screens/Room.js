@@ -15,7 +15,6 @@ import api from '../api';
 import io from 'socket.io-client';
 
 class Room extends Component {
-  handleOnReadyButtonRef = ref => this.onReadyButtonRef = ref
   bindSocket(socket) {
     socket.emit('join room', this.props.user); // let socket know we want to join
 
@@ -26,6 +25,11 @@ class Room extends Component {
 
       this.setState({ joined: res });
     });
+    socket.on('isReady', () => {
+      this.setState({
+        isReady: true
+      })
+    })
     socket.on('isActive', isActive => {
       this.setState({ isActive });
     });
@@ -108,7 +112,6 @@ class Room extends Component {
     }
   }
   onReady() {
-    this.onReadyButtonRef.fadeOut();
     this.state.socket.emit('ready');
   }
   constructor(props){
@@ -122,7 +125,7 @@ class Room extends Component {
         status: false
       },
       currentQuestionIndex: -1,
-      isReady: true
+      isReady: false
     };
 
     this.sendMessage = this.sendMessage.bind(this);
@@ -135,7 +138,8 @@ class Room extends Component {
       joined,
       messages,
       display,
-      currentQuestionIndex
+      currentQuestionIndex,
+      isReady
     } = this.state
     return(
       <View style={styles.mainContainer}>
@@ -162,8 +166,8 @@ class Room extends Component {
                   36Questions
                 </Text>
               </View>
-              <Animatable.View
-                ref={this.handleOnReadyButtonRef}
+              
+              { !isReady ? <Animatable.View
                 style={{flex: 1}}
               >
                 <TouchableOpacity
@@ -181,7 +185,7 @@ class Room extends Component {
                     Ready!
                   </Text>
                 </TouchableOpacity>
-              </Animatable.View>
+              </Animatable.View> : null }
 
               {
                 currentQuestionIndex > -1 ?
@@ -200,6 +204,7 @@ class Room extends Component {
           <Text
               style={{
                 ...styles.mainText,
+                textAlign: 'center',
                 backgroundColor: '#f9c296',
                 fontSize: 18
               }}
