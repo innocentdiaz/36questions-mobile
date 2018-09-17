@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import { GiftedChat } from 'react-native-gifted-chat';
 import AnimatedEllipsis from 'react-native-animated-ellipsis';
@@ -139,68 +140,76 @@ class Room extends Component {
     return(
       <View style={styles.mainContainer}>
         <View style={styles.mainHeader}>
-          <View
-            style={{
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              alignItems: 'center'
-            }}
-          >
-            <View style={{flex: 1,}}>
-
-            </View>
-            <View style={{flex: 2, justifyContent: 'center'}}>
-              <Text
-                style={{
-                  ...styles.mainText,
-                  fontSize: 32
-                }}
-              >
-                36Questions
-              </Text>
-            </View>
-            <Animatable.View
-              ref={this.handleOnReadyButtonRef}
-              style={{flex: 1, borderColor: 'white', borderWidth: 1}}
-            >
-              <TouchableOpacity
+          <View> 
+            <View
               style={{
-                ...styles.mainButton
+                backgroundColor: '#f9c296',
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                alignItems: 'center'
               }}
-              onPress={this.onReady}
-              >
+            >
+              <View style={{flex: 1,}}>
+
+              </View>
+              <View style={{flex: 2, justifyContent: 'center'}}>
                 <Text
                   style={{
                     ...styles.mainText,
-                    fontSize: 18
+                    fontSize: 32
                   }}
                 >
-                  Ready!
+                  36Questions
                 </Text>
-              </TouchableOpacity>
-            </Animatable.View>
-
-            {
-              currentQuestionIndex > -1 ?
-              (<Text
+              </View>
+              <Animatable.View
+                ref={this.handleOnReadyButtonRef}
+                style={{flex: 1}}
+              >
+                <TouchableOpacity
                 style={{
-                  ...styles.mainText,
-                  color: 'rgb(249, 194, 150)',
-                  fontSize: 26
+                  ...styles.mainButton
                 }}
-               >
-                {currentQuestionIndex} / 36
-              </Text>) : null
-            }
+                onPress={this.onReady}
+                >
+                  <Text
+                    style={{
+                      ...styles.mainText,
+                      fontSize: 18
+                    }}
+                  >
+                    Ready!
+                  </Text>
+                </TouchableOpacity>
+              </Animatable.View>
+
+              {
+                currentQuestionIndex > -1 ?
+                (<Text
+                  style={{
+                    ...styles.mainText,
+                    color: 'rgb(249, 194, 150)',
+                    fontSize: 26
+                  }}
+                >
+                  {currentQuestionIndex} / 36
+                </Text>) : null
+              }
+            </View>
           </View>
           <Text
               style={{
                 ...styles.mainText,
+                backgroundColor: '#f9c296',
                 fontSize: 18
               }}
             >
               {display}
           </Text>
+          <LinearGradient
+            colors={['#f9c296', 'rgba(249, 194, 150, 0)']}
+            style={styles.linearGradient}
+          />
         </View>
         <GiftedChat
           text={this.state.message}
@@ -223,16 +232,20 @@ const styles = StyleSheet.create({
     paddingTop: 10
   },
   mainHeader: {
-    borderBottomWidth: 1,
-    borderBottomColor: 'white',
-    backgroundColor: '#f9c296',
-    paddingBottom: 10,
-    paddingLeft: 2,
-    paddingRight: 2
+    position: 'absolute',
+    paddingTop: 10,
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1
   },
   mainText: {
     color: 'white',
     fontFamily: Fonts.Playfair
+  },
+  linearGradient: {
+    height: 36,
+    width: '100%'
   },
   mainButton: {
     borderColor: 'white',
