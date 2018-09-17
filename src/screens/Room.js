@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity
 } from 'react-native';
+import { Button } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import { GiftedChat } from 'react-native-gifted-chat';
@@ -111,6 +112,10 @@ class Room extends Component {
       socket.emit('typing', false)
     }
   }
+  doneAnswering() {
+    this.setState({ isActive: null }); // loading
+    this.state.socket.emit('done'); // let the server know we are done answering
+  }
   onReady() {
     this.state.socket.emit('ready');
   }
@@ -125,12 +130,14 @@ class Room extends Component {
         status: false
       },
       currentQuestionIndex: -1,
+      isActive: false,
       isReady: false
     };
 
     this.sendMessage = this.sendMessage.bind(this);
     this.renderFooter = this.renderFooter.bind(this);
     this.onInputTextChanged = this.onInputTextChanged.bind(this);
+    this.doneAnswering = this.doneAnswering.bind(this);
     this.onReady = this.onReady.bind(this);
   };
   render(){
@@ -138,7 +145,7 @@ class Room extends Component {
       joined,
       messages,
       display,
-      currentQuestionIndex,
+      isActive,
       isReady
     } = this.state
     return(
@@ -156,7 +163,7 @@ class Room extends Component {
               <View style={{flex: 1,}}>
 
               </View>
-              <View style={{flex: 2, justifyContent: 'center'}}>
+              <View style={{flex: 2, alignItems: 'center'}}>
                 <Text
                   style={{
                     ...styles.mainText,
@@ -167,14 +174,14 @@ class Room extends Component {
                 </Text>
               </View>
               
-              { !isReady ? <Animatable.View
-                style={{flex: 1}}
-              >
+
+              <View style={{flex: 1,}}>
+              { !isReady ? 
                 <TouchableOpacity
-                style={{
-                  ...styles.mainButton
-                }}
-                onPress={this.onReady}
+                  style={{
+                    ...styles.mainButton
+                  }}
+                  onPress={this.onReady}
                 >
                   <Text
                     style={{
@@ -184,21 +191,25 @@ class Room extends Component {
                   >
                     Ready!
                   </Text>
-                </TouchableOpacity>
-              </Animatable.View> : null }
+                </TouchableOpacity> : null }
 
-              {
-                currentQuestionIndex > -1 ?
-                (<Text
-                  style={{
-                    ...styles.mainText,
-                    color: 'rgb(249, 194, 150)',
-                    fontSize: 26
+                { isActive !== false ? <Button
+                  title="DONE!"
+                  loading={isActive === null}
+                  disabled={!isActive}
+                  onPress={this.doneAnswering}
+                  loadingProps={{ size: "large", color: "rgba(111, 202, 186, 1)" }}
+                  titleStyle={styles.mainText}
+                  buttonStyle={{
+                    backgroundColor: "transparent",
+                    borderColor: "transparent",
+                    borderWidth: 0,
+                    borderColor: 'white',
+                    borderWidth: 1,
+                    padding: 8,
                   }}
-                >
-                  {currentQuestionIndex} / 36
-                </Text>) : null
-              }
+                /> : null }
+              </View>
             </View>
           </View>
           <Text
@@ -238,7 +249,7 @@ const styles = StyleSheet.create({
   },
   mainHeader: {
     position: 'absolute',
-    paddingTop: 10,
+    paddingTop: 15,
     top: 0,
     left: 0,
     right: 0,
@@ -250,7 +261,8 @@ const styles = StyleSheet.create({
   },
   linearGradient: {
     height: 36,
-    width: '100%'
+    width: '100%',
+    paddingTop: 8
   },
   mainButton: {
     borderColor: 'white',
