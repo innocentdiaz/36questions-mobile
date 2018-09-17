@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  StyleSheet
+  StyleSheet,
+  TouchableOpacity
 } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 import { GiftedChat } from 'react-native-gifted-chat';
 import AnimatedEllipsis from 'react-native-animated-ellipsis';
 import { connect } from 'react-redux';
@@ -12,6 +14,7 @@ import api from '../api';
 import io from 'socket.io-client';
 
 class Room extends Component {
+  handleOnReadyButtonRef = ref => this.onReadyButtonRef = ref
   bindSocket(socket) {
     socket.emit('join room', this.props.user); // let socket know we want to join
 
@@ -103,6 +106,10 @@ class Room extends Component {
       socket.emit('typing', false)
     }
   }
+  onReady() {
+    this.onReadyButtonRef.fadeOut();
+    this.state.socket.emit('ready');
+  }
   constructor(props){
     super(props);
     this.state = {
@@ -113,40 +120,87 @@ class Room extends Component {
       typing: {
         status: false
       },
-      currentQuestionIndex: -1
+      currentQuestionIndex: -1,
+      isReady: true
     };
 
     this.sendMessage = this.sendMessage.bind(this);
     this.renderFooter = this.renderFooter.bind(this);
     this.onInputTextChanged = this.onInputTextChanged.bind(this);
+    this.onReady = this.onReady.bind(this);
   };
   render(){
     let {
       joined,
       messages,
       display,
+      currentQuestionIndex
     } = this.state
     return(
       <View style={styles.mainContainer}>
         <View style={styles.mainHeader}>
-          <View>
-            <Text
-              style={{
-                ...styles.mainText,
-                fontSize: 42
-              }}
+          <View
+            style={{
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              alignItems: 'center'
+            }}
+          >
+            <View style={{flex: 1,}}>
+
+            </View>
+            <View style={{flex: 2, justifyContent: 'center'}}>
+              <Text
+                style={{
+                  ...styles.mainText,
+                  fontSize: 32
+                }}
+              >
+                36Questions
+              </Text>
+            </View>
+            <Animatable.View
+              ref={this.handleOnReadyButtonRef}
+              style={{flex: 1, borderColor: 'white', borderWidth: 1}}
             >
-              36Questions
-            </Text>
-            <Text
+              <TouchableOpacity
+              style={{
+                ...styles.mainButton
+              }}
+              onPress={this.onReady}
+              >
+                <Text
+                  style={{
+                    ...styles.mainText,
+                    fontSize: 18
+                  }}
+                >
+                  Ready!
+                </Text>
+              </TouchableOpacity>
+            </Animatable.View>
+
+            {
+              currentQuestionIndex > -1 ?
+              (<Text
+                style={{
+                  ...styles.mainText,
+                  color: 'rgb(249, 194, 150)',
+                  fontSize: 26
+                }}
+               >
+                {currentQuestionIndex} / 36
+              </Text>) : null
+            }
+          </View>
+          <Text
               style={{
                 ...styles.mainText,
                 fontSize: 18
               }}
             >
               {display}
-            </Text>
-          </View>
+          </Text>
         </View>
         <GiftedChat
           text={this.state.message}
@@ -173,12 +227,20 @@ const styles = StyleSheet.create({
     borderBottomColor: 'white',
     backgroundColor: '#f9c296',
     paddingBottom: 10,
-    paddingLeft: 5,
-    paddingRight: 5
+    paddingLeft: 2,
+    paddingRight: 2
   },
   mainText: {
     color: 'white',
     fontFamily: Fonts.Playfair
+  },
+  mainButton: {
+    borderColor: 'white',
+    borderWidth: 1,
+    padding: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 10
   }
 })
 
