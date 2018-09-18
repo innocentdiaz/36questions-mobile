@@ -1,7 +1,9 @@
 import {create} from 'apisauce'
 
+baseURL = process.env.NODE_ENV == 'production' ? 'https://thirtysixq.herokuapp.com/api' : 'http://localhost:5000/api'
+
 const api = create({
-  baseURL: 'http://localhost:5000/api' // 'https://thirtysixq.herokuapp.com/api'
+  baseURL 
 });
 
 export default api;
