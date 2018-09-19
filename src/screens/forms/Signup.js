@@ -1,18 +1,45 @@
 import React, { Component } from 'react';
 import {
   View,
+  TouchableOpacity,
+  TextInput,
   Image,
   StyleSheet,
-  ScrollView,
   Dimensions
 } from 'react-native';
 import { Text, Icon } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import ImagePicker from 'react-native-image-crop-picker';
 import Fonts from '../../utils/Fonts';
 
 class SignUp extends Component {
+  handleSubmit() {
+    this.setState({
+      message: 'Logging in!'
+    })
+  }
+  constructor(props){
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+      firstName: '',
+      lastName: '',
+      avatar: null,
+      message: ''
+    };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+  };
   render(){
+    let {
+      email,
+      password,
+      firstName,
+      lastName,
+      message
+    } = this.state
     return(
       <Animatable.View
         animation="fadeIn"
@@ -38,7 +65,6 @@ class SignUp extends Component {
           >
             36
           </Text>
-
         </View>
 
         <KeyboardAwareScrollView
@@ -59,48 +85,103 @@ class SignUp extends Component {
             <View
               style={styles.form}
             >
-              <Text
-                style={{fontSize: 25}}
-              >
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-                TESTINGTESTINGTESTING
-              </Text>
-            </View>
+              <Image
+                style={{
+                  alignSelf: 'center',
+                  marginTop: 10,
+                  marginBottom: 10,
+                  width: 88,
+                  height: 88,
+                  borderRadius: 44
+                }}
 
+                source={this.state.avatar ? {uri: this.state.avatar.path} : require('../../images/avatar.png')}
+              />
+
+              <TouchableOpacity
+                style={{
+                  ...styles.mainButton,
+                  backgroundColor: 'transparent'
+                }}
+              >
+                <Text style={{
+                  ...styles.mainText,
+                  color: '#f56f68',
+                  fontSize: 25
+                }}>
+                  Choose photo
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.mainButton}
+              >
+                <Text style={{
+                  ...styles.mainText,
+                  fontSize: 25
+                }}>
+                  Take a photo
+                </Text>
+              </TouchableOpacity>
+            
+              <Text style={styles.label}>first name</Text>
+              <TextInput
+                style={styles.textInput}
+                placeholder='John'
+                onChangeText={(firstName) => this.setState({firstName})}
+                value={firstName}
+              />
+              <Text style={styles.label}>last name</Text>
+              <TextInput
+                style={styles.textInput}
+                placeholder='Smith'
+                onChangeText={(lastName) => this.setState({lastName})}
+                value={lastName}
+              />
+              <Text style={styles.label}>email</Text>
+              <TextInput
+                style={styles.textInput}
+                autoCorrect={false}
+                textContentType='emailAddress'
+                placeholder='me@john.com'
+                onChangeText={(email) => this.setState({email})}
+                value={email}
+              />
+              <Text style={styles.label}>password</Text>
+              <TextInput
+                style={styles.textInput}
+                autoCorrect={false}
+                textContentType='password'
+                password
+                secureTextEntry={true}
+                placeholder='********'
+                onChangeText={(password) => this.setState({password})}
+                value={password}
+              />
+              <Animatable.Text
+                style={{
+                  ...styles.mainText,
+                  fontSize: 18,
+                  color: '#f56f68',
+                  marginBottom: 8,
+                  marginTop: 8
+                }}
+              >
+                { message }
+              </Animatable.Text>
+
+              <TouchableOpacity
+                style={styles.mainButton}
+                onPress={this.handleSubmit}
+              >
+                <Text style={{
+                  ...styles.mainText,
+                  fontSize: 25
+                }}>
+                  Continue
+                </Text>
+              </TouchableOpacity>
+            </View>
           </Animatable.View>
         </KeyboardAwareScrollView>
       </Animatable.View>
@@ -118,6 +199,32 @@ const styles = StyleSheet.create({
   mainText: {
     color: 'white',
     fontFamily: Fonts.Playfair
+  },
+  mainButton: {
+    backgroundColor: '#f56f68',
+    padding: 7,
+    width: '100%',
+    alignItems: 'center',
+    borderRadius: 7,
+    borderColor: '#f56f68',
+    borderWidth: 1,
+    marginTop: 10,
+    marginBottom: 10
+  },
+  textInput: {
+    backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderBottomColor: '#f56f68',
+    width: '100%',
+    height: 65,
+    fontSize: 20,
+    marginBottom: 20
+  },
+  label: {
+    alignSelf: 'flex-start',
+    color: '#f56f68',
+    fontSize: 24,
+    marginTop: 3
   },
   topBar: {
     padding: 10,
@@ -137,13 +244,14 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    marginTop: Dimensions.get('window').height / 3
+    marginTop: Dimensions.get('window').height / 3,
+    minHeight: Dimensions.get('window').height / 1.5
   },
   form: {
     backgroundColor: 'white',
+    alignItems: 'center',
     flex: 1,
-    padding: 10,
-    paddingTop: 15
+    padding: 25
   }
 });
 
