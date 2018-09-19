@@ -3,10 +3,12 @@ import {
   View,
   Image,
   StyleSheet,
-  ScrollView
+  ScrollView,
+  Dimensions
 } from 'react-native';
 import { Text, Icon } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Fonts from '../../utils/Fonts';
 
 class SignUp extends Component {
@@ -31,47 +33,76 @@ class SignUp extends Component {
           <Text
             style={{
               ...styles.mainText,
-              fontSize: 48
+              fontSize: 62
             }}
           >
             36
           </Text>
 
         </View>
-        <Animatable.View
-          style={styles.body}
-          animation='slideInUp'
-        >
-          <Image
-            source={require('../../images/clouds.png')}
-            style={{
-              width: '100%',
-              height: 60,
-              resizeMode: 'cover'
-            }}
-            />
-          <View
-            style={styles.form}
-          >
-            <Text
-              style={{fontSize: 25}}
-            >
-              TESTINGTESTINGTESTING
-              TESTINGTESTINGTESTING
-              TESTINGTESTINGTESTING
-              TESTINGTESTINGTESTING
-              TESTINGTESTINGTESTING
-              TESTINGTESTINGTESTING
-              TESTINGTESTINGTESTING
-              TESTINGTESTINGTESTING
-              TESTINGTESTINGTESTING
-              TESTINGTESTINGTESTING
-              TESTINGTESTINGTESTING
-              TESTINGTESTINGTESTING
-            </Text>
-          </View>
 
-        </Animatable.View>
+        <KeyboardAwareScrollView
+          bounces={false}
+        >
+          <Animatable.View
+            style={styles.body}
+            animation='slideInUp'
+          >
+            <Image
+              source={require('../../images/clouds.png')}
+              style={{
+                width: Dimensions.get('window').width,
+                height: 60,
+                alignSelf: 'center'
+              }}
+              />
+            <View
+              style={styles.form}
+            >
+              <Text
+                style={{fontSize: 25}}
+              >
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+                TESTINGTESTINGTESTING
+              </Text>
+            </View>
+
+          </Animatable.View>
+        </KeyboardAwareScrollView>
       </Animatable.View>
     );
   }
@@ -105,11 +136,14 @@ const styles = StyleSheet.create({
     right: 0
   },
   body: {
-    flex: 1
+    flex: 1,
+    marginTop: Dimensions.get('window').height / 3
   },
   form: {
     backgroundColor: 'white',
-    flex: 1
+    flex: 1,
+    padding: 10,
+    paddingTop: 15
   }
 });
 
