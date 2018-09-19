@@ -4,7 +4,7 @@ import * as Animatable from 'react-native-animatable';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 import Login from './forms/Login';
-import Signup from './forms/Signup';
+import { signupView } from '../App';
 
 class Onboarding extends Component {
   handleMainHeaderRef = ref => this.mainHeaderRef = ref
@@ -66,7 +66,6 @@ class Onboarding extends Component {
         </View>
         {
           currentScreen === 'login' ? <Login loginCb={this.props.loginCb}/> :
-          currentScreen === 'signup' ? <Signup/> :
           (
             <Animatable.View
               style={{flex: 1}}
@@ -90,7 +89,7 @@ class Onboarding extends Component {
               >
                 <TouchableOpacity 
                   style={{ ...styles.buttonStyle, marginTop: 10 }}
-                  onPress={this.showSignup}
+                  onPress={signupView}
                 >
                   <Text style={{ ...styles.mainText, fontSize: 25 }}>SIGNUP</Text>
                 </TouchableOpacity>

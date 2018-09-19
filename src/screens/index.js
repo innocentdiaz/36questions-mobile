@@ -4,6 +4,7 @@ import Landing from './Landing'
 import Onboarding from './Onboarding'
 import Matching from './Matching';
 import Room from './Room';
+import SignUp from './forms/Signup';
 
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setDefaultOptions({
@@ -21,4 +22,5 @@ export function registerScreens(Provider, store) {
   Navigation.registerComponentWithRedux('app.Onboarding', () => Onboarding, Provider, store)
   Navigation.registerComponentWithRedux('app.Matching', () => Matching, Provider, store)
   Navigation.registerComponentWithRedux('app.Room', () => Room, Provider, store)
+  Navigation.registerComponentWithRedux('app.signUp', () => SignUp, Provider, store)
 }

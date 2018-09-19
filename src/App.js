@@ -83,3 +83,17 @@ export const roomView = roomID => {
     }
   })
 }
+
+export const signupView = () => {
+  Navigation.setRoot({
+    root: {
+      stack: {
+        children: [{
+          component: {
+            name: 'app.signUp'
+          }
+        }]
+      }
+    }
+  })
+}
