@@ -74,5 +74,9 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>36Questions needs to access your camera roll for the best experience</string>
+	<key>NSCameraUsageDescription</key>
+	<string>36Questions needs to access your camera for the best experience</string>
 </dict>
 </plist>
