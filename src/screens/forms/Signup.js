@@ -77,6 +77,7 @@ class SignUp extends Component {
       })
     }
 
+    this.setState({ message: '' })
     Navigation.push(this.props.componentId, {
       component: {
         name: 'app.signUp.gender'
