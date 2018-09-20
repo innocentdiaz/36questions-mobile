@@ -9,12 +9,16 @@ import {
   Alert
 } from 'react-native';
 import { connect } from 'react-redux';
-import { setField } from '../../redux/actions/signupActions';
+import {
+  setField,
+  setDefault
+} from '../../redux/actions/signupActions';
 import { Text, Icon } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import ImagePicker from 'react-native-image-crop-picker';
 import Fonts from '../../utils/Fonts';
+import { Onboarding } from '../../App';
 
 class SignUp extends Component {
   takePicture() {
@@ -27,7 +31,7 @@ class SignUp extends Component {
         avatar: image
       });
     }).catch(err => {
-      Alert.alert(err)
+      Alert.alert(err.message)
     });
   }
   toggleCameraRoll() {
@@ -40,7 +44,7 @@ class SignUp extends Component {
         avatar: image
       });
     }).catch(err => {
-      Alert.alert(err)
+      Alert.alert(err.message)
     });
   };
   handleSubmit() {
@@ -59,7 +63,6 @@ class SignUp extends Component {
     this.toggleCameraRoll = this.toggleCameraRoll.bind(this);
   };
   render(){
-    console.log(this.props.data)
     let {
       email,
       password,
@@ -80,6 +83,10 @@ class SignUp extends Component {
             name="chevron-left"
             size={48}
             color='white'
+            onPress={() => {
+              this.props.setDefault()
+              Onboarding()
+            }}
           />
         </View>
         <View
@@ -262,7 +269,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
-    right: 0
+    right: 0,
+    zIndex: 15
   },
   head: {
     alignItems: 'center',
@@ -289,7 +297,8 @@ const mapStateToProps = state => ({
   data: state.signUp
 });
 const mapDispatchToProps = {
-  setField
+  setField,
+  setDefault
 };
 
 export default connect(
