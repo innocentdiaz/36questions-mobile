@@ -19,6 +19,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import ImagePicker from 'react-native-image-crop-picker';
 import Fonts from '../../utils/Fonts';
 import { Onboarding } from '../../App';
+import { Navigation } from 'react-native-navigation';
 
 class SignUp extends Component {
   takePicture() {
@@ -48,9 +49,39 @@ class SignUp extends Component {
     });
   };
   handleSubmit() {
-    this.props.setField({
-      message: 'Logging in!'
-    })
+    let {
+      email,
+      password,
+      firstName,
+      lastName
+    } = this.props.data
+
+    if (email.trim().length == 0) {
+      return this.setState({
+        message: 'Email is too short'
+      })
+    }
+    if (password.trim().length < 8) {
+      return this.setState({
+        message: 'Password must be atleast 8 characters long'
+      })
+    }
+    if (firstName.trim().length == 0) {
+      return this.setState({
+        message: 'First name is too short'
+      })
+    }
+    if (lastName.trim().length == 0) {
+      return this.setState({
+        message: 'Last name is too short'
+      })
+    }
+
+    Navigation.push(this.props.componentId, {
+      component: {
+        name: 'app.signUp.gender'
+      }
+    });
   }
   constructor(props){
     super(props);
