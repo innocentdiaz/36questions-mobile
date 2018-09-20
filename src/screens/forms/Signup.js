@@ -14,6 +14,33 @@ import ImagePicker from 'react-native-image-crop-picker';
 import Fonts from '../../utils/Fonts';
 
 class SignUp extends Component {
+  takePicture() {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 300,
+      cropping: true
+    }).then(image => {
+      this.setState({
+        avatar: image
+      });
+    }).catch(err => {
+      console.log(err)
+      Alert.alert(err)
+    });
+  }
+  toggleCameraRoll() {
+    ImagePicker.openPicker({
+      multiple: false,
+      waitAnimationEnd: false,
+      includeExif: true
+    }).then(image => {
+      this.setState({
+        avatar: image
+      });
+    }).catch(err => {
+      Alert.alert(err)
+    });
+  };
   handleSubmit() {
     this.setState({
       message: 'Logging in!'
@@ -31,6 +58,8 @@ class SignUp extends Component {
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.takePicture = this.takePicture.bind(this);
+    this.toggleCameraRoll = this.toggleCameraRoll.bind(this);
   };
   render(){
     let {
@@ -103,6 +132,7 @@ class SignUp extends Component {
                   ...styles.mainButton,
                   backgroundColor: 'transparent'
                 }}
+                onPress={this.toggleCameraRoll}
               >
                 <Text style={{
                   ...styles.mainText,
@@ -115,6 +145,7 @@ class SignUp extends Component {
 
               <TouchableOpacity
                 style={styles.mainButton}
+                onPress={this.takePicture}
               >
                 <Text style={{
                   ...styles.mainText,
