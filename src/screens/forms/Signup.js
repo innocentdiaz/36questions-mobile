@@ -5,8 +5,11 @@ import {
   TextInput,
   Image,
   StyleSheet,
-  Dimensions
+  Dimensions,
+  Alert
 } from 'react-native';
+import { connect } from 'react-redux';
+import { setField } from '../../redux/actions/signupActions';
 import { Text, Icon } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -20,11 +23,10 @@ class SignUp extends Component {
       height: 300,
       cropping: true
     }).then(image => {
-      this.setState({
+      this.props.setField({
         avatar: image
       });
     }).catch(err => {
-      console.log(err)
       Alert.alert(err)
     });
   }
@@ -34,7 +36,7 @@ class SignUp extends Component {
       waitAnimationEnd: false,
       includeExif: true
     }).then(image => {
-      this.setState({
+      this.props.setField({
         avatar: image
       });
     }).catch(err => {
@@ -42,33 +44,30 @@ class SignUp extends Component {
     });
   };
   handleSubmit() {
-    this.setState({
+    this.props.setField({
       message: 'Logging in!'
     })
   }
   constructor(props){
     super(props);
-    this.state = {
-      email: '',
-      password: '',
-      firstName: '',
-      lastName: '',
-      avatar: null,
-      message: ''
-    };
 
+    this.state = {
+      message: ''
+    }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.takePicture = this.takePicture.bind(this);
     this.toggleCameraRoll = this.toggleCameraRoll.bind(this);
   };
   render(){
+    console.log(this.props.data)
     let {
       email,
       password,
       firstName,
       lastName,
-      message
-    } = this.state
+      avatar
+    } = this.props.data
+
     return(
       <Animatable.View
         animation="fadeIn"
@@ -124,7 +123,7 @@ class SignUp extends Component {
                   borderRadius: 44
                 }}
 
-                source={this.state.avatar ? {uri: this.state.avatar.path} : require('../../images/avatar.png')}
+                source={avatar ? {uri: avatar.path} : require('../../images/avatar.png')}
               />
 
               <TouchableOpacity
@@ -159,14 +158,14 @@ class SignUp extends Component {
               <TextInput
                 style={styles.textInput}
                 placeholder='John'
-                onChangeText={(firstName) => this.setState({firstName})}
+                onChangeText={(firstName) => this.props.setField({firstName})}
                 value={firstName}
               />
               <Text style={styles.label}>last name</Text>
               <TextInput
                 style={styles.textInput}
                 placeholder='Smith'
-                onChangeText={(lastName) => this.setState({lastName})}
+                onChangeText={(lastName) => this.props.setField({lastName})}
                 value={lastName}
               />
               <Text style={styles.label}>email</Text>
@@ -175,7 +174,7 @@ class SignUp extends Component {
                 autoCorrect={false}
                 textContentType='emailAddress'
                 placeholder='me@john.com'
-                onChangeText={(email) => this.setState({email})}
+                onChangeText={(email) => this.props.setField({email})}
                 value={email}
               />
               <Text style={styles.label}>password</Text>
@@ -186,7 +185,7 @@ class SignUp extends Component {
                 password
                 secureTextEntry={true}
                 placeholder='********'
-                onChangeText={(password) => this.setState({password})}
+                onChangeText={(password) => this.props.setField({password})}
                 value={password}
               />
               <Animatable.Text
@@ -198,7 +197,7 @@ class SignUp extends Component {
                   marginTop: 8
                 }}
               >
-                { message }
+                { this.state.message }
               </Animatable.Text>
 
               <TouchableOpacity
@@ -286,4 +285,14 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SignUp
+const mapStateToProps = state => ({
+  data: state.signUp
+});
+const mapDispatchToProps = {
+  setField
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SignUp);
