@@ -10,3 +10,10 @@ export const setField = obj => {
     payload: obj
   }
 }
+
+export const toggleInterest = gender => {
+  return {
+    type: 'TOGGLE_INTEREST',
+    payload: gender
+  }
+}
