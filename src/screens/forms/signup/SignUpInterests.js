@@ -18,9 +18,16 @@ class SignUpInterests extends Component {
     if (data.interests.length == 0) {
       this.setState({ message: 'Please choose atleast one interest' })
     } else {
+      this.setState({ message: '' })
+
       Navigation.push(this.props.componentId, {
         component: {
-          name: 'app.signUp.preview'
+          name: 'app.signUp.preview',
+          options: {
+            layout: {
+              backgroundColor: '#f56f68'
+            }
+          }
         }
       })
     }
@@ -34,7 +41,6 @@ class SignUpInterests extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   };
   render(){
-    console.log(this.state)
     let { interests } = this.props.data;
     let selectedMale = interests.includes('male')
     let selectedFemale = interests.includes('female')
@@ -149,17 +155,20 @@ class SignUpInterests extends Component {
               </Text>
             </TouchableOpacity>
           </View>
-          <View style={{flex: 1}}>
-            <Text
-              style={{
-                color: '#f56f68',
-                marginLeft: 10,
-                fontSize: 18
-              }}
-            >
-              { this.state.message }
-            </Text>
-          </View>
+          { this.state.message ? (
+            <View style={{flex: 1}}>
+              <Text
+                style={{
+                  color: '#f56f68',
+                  marginLeft: 10,
+                  fontSize: 18
+                }}
+              >
+                { this.state.message }
+              </Text>
+            </View>) : null
+          }
+          
         </Animatable.View>
       </View>
     );
