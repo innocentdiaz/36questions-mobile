@@ -28,4 +28,5 @@ export function registerScreens(Provider, store) {
   Navigation.registerComponentWithRedux('app.signUp', () => SignUp, Provider, store)
   Navigation.registerComponentWithRedux('app.signUp.gender', () => SignUpGender, Provider, store)
   Navigation.registerComponentWithRedux('app.signUp.interests', () => SignUpInterests, Provider, store)
+  Navigation.registerComponentWithRedux('app.signUp.preview', () => SignUpPreview, Provider, store)
 }
