@@ -12,6 +12,24 @@ import { Icon } from 'react-native-elements';
 import { Navigation } from 'react-native-navigation';
 
 class SignUpGender extends Component {
+  transitionToInterests() {
+    Navigation.push(this.props.componentId, {
+      component: {
+        name: 'app.signUp.interests',
+        options: {
+          layout: {
+            backgroundColor: 'white'
+          }
+        }
+      }
+    });
+  }
+  constructor(props){
+    super(props);
+    this.state = {};
+
+    this.transitionToInterests = this.transitionToInterests.bind(this);
+  };
   render(){
     return(
       <View
@@ -64,6 +82,10 @@ class SignUpGender extends Component {
                 borderColor: '#f56f68',
                 borderWidth: 1
               }}
+              onPress={() => {
+                this.props.setField({ gender: 'male' });
+                this.transitionToInterests()
+              }}
             />
           </Animatable.View>
           <Animatable.View
@@ -74,6 +96,10 @@ class SignUpGender extends Component {
               alignItems: 'center',
               justifyContent: 'space-around',
               paddingBottom: 50
+            }}
+            onPress={() => {
+              this.props.setField({ gender: 'female' });
+              this.transitionToInterests()
             }}
           >
             <Icon
@@ -86,6 +112,10 @@ class SignUpGender extends Component {
                 backgroundColor: 'transparent',
                 borderColor: '#f56f68',
                 borderWidth: 1
+              }}
+              onPress={() => {
+                this.props.setField({ gender: 'female' });
+                this.transitionToInterests()
               }}
             />
           </Animatable.View>
