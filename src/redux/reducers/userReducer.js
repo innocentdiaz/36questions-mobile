@@ -1,6 +1,7 @@
 const defaultUser = {
   firstName: 'Anon',
   lastName: 'User',
+  bio: '',
   interests: [],
   gender: null,
   authToken: null,

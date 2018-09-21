@@ -3,6 +3,7 @@ const defaultState = {
   password: '',
   firstName: '',
   lastName: '',
+  bio: '',
   avatar: null,
   gender: null,
   interests: []

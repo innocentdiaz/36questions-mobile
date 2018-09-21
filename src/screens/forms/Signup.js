@@ -105,6 +105,7 @@ class SignUp extends Component {
       password,
       firstName,
       lastName,
+      bio,
       avatar
     } = this.props.data
 
@@ -212,6 +213,15 @@ class SignUp extends Component {
                 onChangeText={(lastName) => this.props.setField({lastName})}
                 value={lastName}
               />
+              <Text style={styles.label}>bio</Text>
+              <TextInput
+                style={styles.textArea}
+                placeholder='About yourself'
+                onChangeText={(bio) => this.props.setField({bio})}
+                value={bio}
+                numberOfLines={10}
+                multiline={true}
+              />
               <Text style={styles.label}>email</Text>
               <TextInput
                 style={styles.textInput}
@@ -293,6 +303,16 @@ const styles = StyleSheet.create({
     height: 65,
     fontSize: 20,
     marginBottom: 20
+  },
+  textArea: {
+    backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderBottomColor: '#f56f68',
+    width: '100%',
+    fontSize: 20,
+    marginBottom: 20,
+    height: 150,
+    justifyContent: "flex-start"
   },
   label: {
     alignSelf: 'flex-start',

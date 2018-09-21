@@ -125,23 +125,21 @@ class SignUpPreview extends Component {
             ></View>
           </View>
           
-          {/* This will be added soon
-            <Text
-              style={{
-                fontSize: 26
-              }}
-            >
-              About
-            </Text>
-            <Text
-              style={{
-                ...styles.mainText,
-                fontSize: 18
-              }}
-            >
-              { data.bio }
-            </Text>
-          */}
+          <Text
+            style={{
+              fontSize: 26
+            }}
+          >
+            About
+          </Text>
+          <Text
+            style={{
+              ...styles.mainText,
+              fontSize: 18
+            }}
+          >
+            { data.bio }
+          </Text>
         </Animatable.View>
       </View>
     );
