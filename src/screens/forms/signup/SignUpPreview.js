@@ -4,17 +4,42 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  AsyncStorage,
+  Alert,
   StyleSheet
 } from 'react-native';
+import { setUser, setAuthToken } from '../../../redux/actions/userActions';
 import { Icon } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import api from '../../../api';
+import ActivityIndicator from 'react-native-activity-indicator';
+import { loggedInView } from '../../../App';
 
 class SignUpPreview extends Component {
   handleSubmit() {
-    console.log('Signing up')
+    this.setState({ loading: true })
+
+    api.post('/users', this.props.data)
+    .then(res => {
+      this.setState({ loading: false })
+      if (res.ok) {
+        let { user, token } = res.data
+
+        this.props.setUser(user)
+        this.props.setAuthToken(token)
+
+        console.log('AsyncStorage.setItem token to ', token)
+        AsyncStorage.setItem('@TSQ:auth_token', token);
+
+        loggedInView()
+      } else {
+        let message = res.data ? res.data.message : 'Could not create profile... Please try again later'
+
+        Alert.alert(message)
+      }
+    })
   }
   interestsToReadable() {
     interests = this.props.data.interests
@@ -29,7 +54,9 @@ class SignUpPreview extends Component {
   }
   constructor(props){
     super(props);
-    this.state = {};
+    this.state = {
+      loading: false
+    };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.interestsToReadable = this.interestsToReadable.bind(this);
@@ -85,7 +112,9 @@ class SignUpPreview extends Component {
           <TouchableOpacity
             style={styles.mainButton}
             onPress={this.handleSubmit}
+            disabled={this.state.loading}
           >
+            { this.state.loading ? <ActivityIndicator/> : null }
             <Text
               style={{
                 color: '#f56f68',
@@ -163,7 +192,8 @@ const styles = StyleSheet.create({
     paddingLeft: 35,
     paddingRight: 35,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
     borderRadius: 21,
     position: 'absolute',
     top: -21,
@@ -225,7 +255,12 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   data: state.signUp
 });
+const mapDispatchToProps = {
+  setUser,
+  setAuthToken
+}
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(SignUpPreview)
