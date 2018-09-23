@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Fonts from '../utils/Fonts';
 import * as Animatable from 'react-native-animatable';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import { Text, Button } from 'react-native-elements';
+import { Text } from 'react-native-elements';
 import Login from './forms/Login';
 import { signupView } from '../App';
 

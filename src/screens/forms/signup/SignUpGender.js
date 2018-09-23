@@ -7,7 +7,6 @@ import {
 import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
 import { setField } from '../../../redux/actions/signupActions';
-import Fonts from '../../../utils/Fonts';
 import { Icon } from 'react-native-elements';
 import { Navigation } from 'react-native-navigation';
 

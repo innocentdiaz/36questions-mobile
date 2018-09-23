@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
   StyleSheet,
-  View,
   Text,
   TouchableOpacity
 } from 'react-native';
