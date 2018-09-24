@@ -6,16 +6,13 @@ export const fetchUser = authToken => dispatch => {
     setAuthToken(authToken)
   );
 
-  console.log('will fetch using', authToken)
   api.get(`/auth/${authToken}`)
   .then(res => {
     if (res.ok) {
-      console.log('just set the user')
       dispatch(
         setUser(res.data)
       )
     } else {
-      console.log('could not fetch user', res)
       dispatch({
         type: 'SET_USER_DEFAULT'
       })
