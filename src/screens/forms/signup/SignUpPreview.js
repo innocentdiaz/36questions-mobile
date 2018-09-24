@@ -21,7 +21,37 @@ class SignUpPreview extends Component {
   handleSubmit() {
     this.setState({ loading: true })
 
-    api.post('/users', this.props.data)
+    let properties = {
+      firstName,
+      lastName,
+      password,
+      email,
+      gender,
+      interests
+    } = this.props.data
+    
+    let { avatar } = this.props.data
+
+    var formData = new FormData();
+    const config = {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data;'
+      }
+    };
+    for (prop in properties) {
+      formData.append(prop, properties[prop])
+    }
+    
+    if (avatar) {
+      formData.append('profilePicture', { // these 3 properties are required !!!
+        uri: avatar.path,
+        type: avatar.mime,
+        name: avatar.filename,
+      }, avatar.filename)
+    }
+
+    api.post('/users', formData, config)
     .then(res => {
       this.setState({ loading: false })
       if (res.ok) {
@@ -30,12 +60,11 @@ class SignUpPreview extends Component {
         this.props.setUser(user)
         this.props.setAuthToken(token)
 
-        console.log('AsyncStorage.setItem token to ', token)
         AsyncStorage.setItem('@TSQ:auth_token', token);
 
         loggedInView()
       } else {
-        let message = res.data ? res.data.message : 'Could not create profile... Please try again later'
+        let message = res.data ? typeof res.data.message == 'string' && res.data.message.trim().length > 1 : 'Could not create profile... Please try again later'
 
         Alert.alert(message)
       }
