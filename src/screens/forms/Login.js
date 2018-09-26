@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  AsyncStorage,
   StyleSheet,
   TextInput,
   TouchableOpacity } from 'react-native';
@@ -9,6 +10,7 @@ import { connect } from 'react-redux';
 import { fetchUser } from '../../redux/actions/userActions';
 import Fonts from '../../utils/Fonts';
 import api from '../../api';
+import { loggedInView } from '../../App';
 
 class Login extends Component {
   handleMainContainerRef = ref => this.mainContainerRef = ref
@@ -33,17 +35,19 @@ class Login extends Component {
         message: 'Logging in...'
       })
 
-      // Log user in and exec this.props.loggedInView
       api.post('/auth', { email, password })
       .then(res => {
         let { token } = res.data
-        if (res.ok) {
-          this.props.fetchUser(token)
-          this.props.loginCb(token)
+        if (res.ok && token) {
+          AsyncStorage.setItem('@TSQ:auth_token', token);
+          this.props.fetchUser(token);
+          loggedInView();
         } else {
           this.errorTextRef.bounce(800)
           this.setState({
-            message: res.data.message || 'Failed to log in!'
+            // Annoying checking for res.data.message
+            // This is because sometiimes res.data is null / undefined even if the res is ok
+            message: res.data && res.data.message ? res.data.message : 'Failed to log in!' 
           })
         }
       })

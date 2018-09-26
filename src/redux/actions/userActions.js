@@ -1,23 +1,26 @@
 import api from '../../api';
 
-export const fetchUser = authToken => dispatch => {
-  if (!authToken) throw 'No authToken provided to fetchUser action'
-  dispatch(
-    setAuthToken(authToken)
-  );
+// We want this to be async so we can wait for a request for a user is fulfilled before moving on
+export const fetchUser = authToken => async dispatch => {
+  if (!authToken) {
+    return dispatch({
+      type: 'SET_USER_DEFAULT'
+    })
+  }
 
-  api.get(`/auth/${authToken}`)
-  .then(res => {
-    if (res.ok) {
-      dispatch(
-        setUser(res.data)
-      )
-    } else {
-      dispatch({
-        type: 'SET_USER_DEFAULT'
-      })
-    }
-  })
+  dispatch(setAuthToken(authToken))
+
+  let res = await api.get(`/auth/${authToken}`);
+
+  if (res.ok) {
+    dispatch(
+      setUser(res.data)
+    )
+  } else {
+    dispatch({
+      type: 'SET_USER_DEFAULT'
+    })
+  }
 }
 
 export const setUser = user => {
