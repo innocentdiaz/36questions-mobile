@@ -23,6 +23,11 @@ export default userReducer = (state = defaultUser, action) => {
         ...defaultUser,
         loading: false
       }
+      case "SET_AUTH_TOKEN":
+      return {
+        ...state,
+        authToken: action.payload
+      }
     default:
       return state
   }
