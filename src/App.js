@@ -8,7 +8,6 @@ import { registerScreens } from './screens';
 registerScreens(Provider, store)
 
 export const startApplication = async () => {
-  await AsyncStorage.removeItem('@TSQ:auth_token', () => console.log('removed auth token'))
   let authToken = await AsyncStorage.getItem('@TSQ:auth_token')
   
   if (authToken) {
