@@ -7,16 +7,17 @@ import { registerScreens } from './screens';
 
 registerScreens(Provider, store)
 
-export const startApplication = () => {
-  AsyncStorage.getItem('@TSQ:auth_token')
-  .then(val => {
-    store.dispatch(fetchUser(val))
+export const startApplication = async () => {
+  await AsyncStorage.removeItem('@TSQ:auth_token', () => console.log('removed auth token'))
+  let authToken = await AsyncStorage.getItem('@TSQ:auth_token')
+  
+  if (authToken) {
+    store.dispatch(fetchUser(authToken))
     loggedInView()
-  })
-  .catch(err => {
+  } else {
     AsyncStorage.removeItem('@TSQ:auth_token')
     Onboarding()
-  })
+  }
 }
 
 export const Onboarding = () => {
@@ -25,13 +26,7 @@ export const Onboarding = () => {
       stack: {
         children: [{
           component: {
-            name: 'app.Onboarding',
-            passProps: {
-              loginCb: authToken => {
-                AsyncStorage.setItem('@TSQ:auth_token', authToken);
-                loggedInView()
-              }
-            }
+            name: 'app.Onboarding'
           }
         }]
       },
