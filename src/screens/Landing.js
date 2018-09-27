@@ -10,6 +10,8 @@ import { connect } from 'react-redux';
 import LoadingScreen from './LoadingScreen';
 import Fonts from '../utils/Fonts';
 import { matchingView, Onboarding } from '../App';
+import { Navigation } from 'react-native-navigation';
+import BaseView from './components/BaseView';
 
 class Landing extends Component {
   handleTransitionBubble = ref => this.transitionBubble = ref
@@ -36,63 +38,62 @@ class Landing extends Component {
   render(){
     let { user } = this.props;
 
-    if (user.loading) {
-      return(
-        <LoadingScreen />
-      )
-    }
     if (!user.authenticated) {
       Onboarding()
       return null
     }
 
     return(
-      <Animatable.View
-        style={styles.mainContainer}
+      <BaseView
+        loading={user.loading}
       >
         <Animatable.View
-          ref={this.handleTransitionBubble}
-          style={styles.transitionBubble}
-        ></Animatable.View>
-
-        <Animatable.View
-          ref={this.handleFrameRef}
+          style={styles.mainContainer}
         >
-          <Animatable.Text
-            animation="fadeInUp"
-            delay={500}
-            style={styles.mainText}
-          >
-            Welcome, {user.firstName}
-          </Animatable.Text>
           <Animatable.View
-            animation="fadeInUp"
-            delay={750}
+            ref={this.handleTransitionBubble}
+            style={styles.transitionBubble}
+          ></Animatable.View>
+
+          <Animatable.View
+            ref={this.handleFrameRef}
           >
-            <Animatable.View
-              animation="pulse"
-              easing="ease-out"
-              iterationCount="infinite"
-              delay={2000}
-              duration={4500}
+            <Animatable.Text
+              animation="fadeInUp"
+              delay={500}
+              style={styles.mainText}
             >
-              <TouchableOpacity
-                style={styles.mainButton}
-                onPress={this.getMatched}
+              Welcome, {user.firstName}
+            </Animatable.Text>
+            <Animatable.View
+              animation="fadeInUp"
+              delay={750}
+            >
+              <Animatable.View
+                animation="pulse"
+                easing="ease-out"
+                iterationCount="infinite"
+                delay={2000}
+                duration={4500}
               >
-                <Text
-                  style={{
-                    ...styles.mainText,
-                    fontSize: 30
-                  }}
+                <TouchableOpacity
+                  style={styles.mainButton}
+                  onPress={this.getMatched}
                 >
-                  GET MATCHED
-                </Text>
-              </TouchableOpacity>
+                  <Text
+                    style={{
+                      ...styles.mainText,
+                      fontSize: 30
+                    }}
+                  >
+                    GET MATCHED
+                  </Text>
+                </TouchableOpacity>
+              </Animatable.View>
             </Animatable.View>
           </Animatable.View>
         </Animatable.View>
-      </Animatable.View>
+      </BaseView>
     );
   }
 };

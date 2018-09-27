@@ -1,5 +1,6 @@
 import { Navigation } from 'react-native-navigation'
 
+import SideMenu from './components/SideMenu';
 import Landing from './Landing'
 import Onboarding from './Onboarding'
 import Matching from './Matching';
@@ -21,6 +22,8 @@ Navigation.events().registerAppLaunchedListener(() => {
 });
 
 export function registerScreens(Provider, store) {
+  Navigation.registerComponentWithRedux('app.sideMenu', () => SideMenu, Provider, store)
+
   Navigation.registerComponentWithRedux('app.Landing', () => Landing, Provider, store)
   Navigation.registerComponentWithRedux('app.Onboarding', () => Onboarding, Provider, store)
   Navigation.registerComponentWithRedux('app.Matching', () => Matching, Provider, store)
