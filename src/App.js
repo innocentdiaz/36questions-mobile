@@ -36,11 +36,11 @@ export const Onboarding = () => {
 export const loggedInView = () => {
   Navigation.setRoot({
     root: {
-      sideMenu: { // optional, add this if you want a side menu drawer in your app
-        left: { // optional, define if you want a drawer from the left
+      sideMenu: {
+        left: {
           component: {
             id: 'leftSideDrawer',
-            name: 'app.sideMenu', // unique ID registered with Navigation.registerScreen
+            name: 'app.sideMenu',
           }
         },
         center: {
